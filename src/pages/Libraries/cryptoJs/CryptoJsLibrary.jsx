@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import CryptoJS from "crypto-js";
 
 export default function CryptoJsLibrary() {
-  const [hashedValue, setHashedValue] = useState(null);
+  const secretKey = "mySecretKey123"; // Keep this key safe!
 
   // Example object to hash
   const exampleObject = {
@@ -11,40 +11,36 @@ export default function CryptoJsLibrary() {
     email: "john@example.com",
   };
 
-  const hashAndStoreObject = (obj) => {
+  const encryptAndStoreObject = (obj) => {
     try {
       // Convert object to JSON string
       const jsonString = JSON.stringify(obj);
 
-      // Hash the string using SHA-256
-      const hash = CryptoJS.SHA256(jsonString).toString();
+      // Encrypt the JSON string
+      const encryptedData = CryptoJS.AES.encrypt(
+        jsonString,
+        secretKey
+      ).toString();
 
-      // Store the hash in localStorage
-      localStorage.setItem("hashedObject", hash);
+      // Store encrypted data & hash in localStorage
+      localStorage.setItem("encryptedObject", encryptedData);
 
-      // Update state with hashed string (not an object)
-      setHashedValue(hash);
-
-      console.log("Hashed Object Stored in LocalStorage:", hash);
+      console.log("Encrypted Data Stored:", encryptedData);
+      // console.log("Hashed Data Stored:", hash);
     } catch (error) {
-      console.error("Error hashing the object:", error);
+      console.error("Error encrypting the object:", error);
     }
   };
 
   return (
     <div className="p-4 border rounded shadow-lg">
-      <h2 className="text-xl font-bold">Hash & Store Object</h2>
+      <h2 className="text-xl font-bold">Encrypt & Store Object</h2>
       <button
         className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-        onClick={() => hashAndStoreObject(exampleObject)}
+        onClick={() => encryptAndStoreObject(exampleObject)}
       >
-        Hash Object & Store in LocalStorage
+        Encrypt & Store in LocalStorage
       </button>
-      {hashedValue && (
-        <p className="mt-2 text-gray-700 break-all">
-          <strong>Hashed Value:</strong> {hashedValue}
-        </p>
-      )}
     </div>
   );
 }

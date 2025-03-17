@@ -16,7 +16,7 @@ export default function App() {
       {/* <SpinnerLoading /> */}
 
       <CryptoJsLibrary />
-      {/* <RecicveComponent /> */}
+      <RecicveComponent />
     </div>
   );
 }
